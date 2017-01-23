@@ -1,0 +1,33 @@
+
+You have an array of strings, like that
+
+[
+ '() [] () ([]()[])',
+ '( (] ([)]',
+ '{}[]()',
+ '{{}]}',
+ '{[}',
+ '[}]'
+];
+
+implement please the function which 
+prints 'YES' into output if
+the string has proper 
+amount of parenthesis.
+
+By proper amount of parenthesis 
+we understand the case 
+when for the each
+opening parentheses 
+we have appropriated closing one.
+
+Result for the array above, looks like this:
+
+[
+  'YES',
+  'NO',
+  'YES'
+  'NO'
+  'NO',
+  'NO'
+]

@@ -1,0 +1,427 @@
+Train of thinking
+
+I wrote this lines as an approach 
+saying "let's talk about that I did"
+
+1. Set Up Project
+2. Install modules
+3. Test install 
+
+
+# 1. Set Up Project
+
+mkdir parenthesis
+cd parenthesis
+git init 
+npm init
+
+
+touch THOUGHT_PROCESS.README
+subl THOUGHT_PROCESS.README
+
+git config --local user.name "jesusalc"
+git config --local user.email "jesusalc@gmail.com"
+
+
+mkdir test
+touch test/test-server.js
+touch favicon.ico
+
+
+
+# 2. Install modules
+
+sudo gem install sass
+npm install babel-cli babel-core --save-dev
+npm install babel-preset-es2015 --save-dev
+npm install http-server --save-dev
+npm install babel-loader webpack --save-dev
+npm install -g mocha
+npm install chai chai-http --save-dev
+
+subl package.json 
+       ^^^ 
+      "scripts": {
+          "babel": "babel --presets es2015 js/main.js -o build/main.js",
+          "start": "http-server",
+          "webpack": "webpack"
+      },
+
+subl webpack.config.js
+      ^^^
+     var path = require('path');
+     var webpack = require('webpack');
+
+     module.exports = {
+         entry: './js/main.js',
+         output: {
+             path: path.resolve(__dirname, 'build'),
+             filename: 'main.bundle.js'
+         },
+         module: {
+             loaders: [
+                 {
+                     test: /\.js$/,
+                     loader: 'babel-loader',
+                     query: {
+                         presets: ['es2015']
+                     }
+                 }
+             ]
+         },
+         stats: {
+             colors: true
+         },
+         devtool: 'source-map'
+     };
+
+subl index.html
+      ^^^
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+        <link href="css/styles.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+    <header>
+        <h1>Parenthesis Tester</h1>
+    </header>
+    <div class="content">
+        <div class="form">
+            <div>
+                <label>Test x:</label>
+                <input type="text" class="test" id="testx" value="() [] () ([]()[])"/>
+                <h3>expects: <span class="expect" id="expectx">Yes</span></h3>
+            </div>
+        </div>
+    </div>
+    <script src="build/main.js"></script>
+    </body>
+    </html>    
+
+subl css/styles.sass
+      ^^^
+    $font-stack:    'Roboto', 'Sans Serif'
+    $font-size-body: 16px
+    $font-size-h1: 24px
+    $font-size-h2: 22px
+    $font-size-button: 16px
+    $font-size-input: 14px
+    $font-size-table: 12px
+
+    $color-background-back: #03A9F4
+    $color-background-front: #EF6C00
+    $color-foreground: #0288D1
+    $color-border: #ccc
+    $color-border-active: #ddd
+    $color-input: #555
+    $color-button-background:  #FCFCFC
+
+    =border-radius($radius)
+      -webkit-border-radius: $radius !important
+      -moz-border-radius:    $radius !important
+      -ms-border-radius:     $radius !important
+      border-radius:         $radius !important
+
+    =border-glow-off($seconds)
+      -webkit-transition: all $seconds ease-in-out
+      -moz-transition: all $seconds ease-in-out
+      -ms-transition: all $seconds ease-in-out
+      -o-transition: all $seconds ease-in-out
+      outline: none
+      padding: 3px 0px 3px 3px
+      margin: 5px 1px 3px 0px
+      border: 1px solid $color-border-active
+
+
+    =border-glow-on($color)
+      box-shadow: 0 0 5px $color
+      padding: 3px 0px 3px 3px
+      margin: 5px 1px 3px 0px
+      border: 1px solid $color
+
+
+    body
+      font-family:  $font-stack
+      font-size: $font-size-body
+      padding: 0
+      margin: 0
+
+    header
+      background-color: $color-background-back
+      padding: 14px
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+
+    h1, h2, h3
+      font-weight: 300
+
+    header > h1
+      font-weight: 300
+      font-size: $font-size-h1
+      margin: 0
+      color: #FFFFFF
+
+    h2
+      font-size: $font-size-h1
+      margin: 20px 0 0 0
+      > .currency
+        color: $color-foreground
+
+    h3
+      margin: 10px 0 28px 0
+      > span
+        color: $color-foreground
+
+    .test
+      color: $color-foreground
+
+    .expect
+      color: $color-background-front
+
+    input[type=text]
+      +border-radius(10px)
+      +border-glow-off(0.30s)
+      -webkit-appearance: none
+      width: 150px
+      height: 24px
+      padding: 3px 8px
+      font-size: $font-size-input
+      line-height: 1.42857143
+      color: $color-input
+      border: 1px solid $color-border
+      -webkit-box-shadow: none
+      box-shadow: none
+      &:active
+        +border-glow-on(rgba(81, 203, 238, 1))
+        padding: 3px 8px
+        width: 150px
+        height: 24px
+      &:hover
+        +border-glow-on(rgba(81, 203, 238, 1))
+      &:focus
+        +border-glow-on(rgba(81, 203, 238, 1))
+        padding: 3px 8px
+        width: 150px
+        height: 24px
+
+
+    table
+      border-collapse: collapse
+      font-weight: 300
+      font-size: $font-size-table
+
+    th
+      text-align: right
+      font-weight: 400
+
+    td
+      text-align: right
+      padding: 0 .5rem
+
+    th, td
+      border: solid 1px #EEEEEE !important
+      padding: 1px 4px
+
+    label
+      display: inline-block
+      width: 80px
+      text-align: right
+      margin-right: 4px
+
+    .content
+      padding: 20px
+
+    .bar
+      display: inline-block
+      border: none
+      height: 8px
+      &.test
+        background-color: $color-foreground
+        margin-right: 1px
+      &.expect
+        background-color: $color-background-front
+        margin-left: 1px
+
+    .stretch
+      width: 100%
+      padding-left: 0
+      padding-right: 0
+
+    .flex
+      display: -webkit-flex
+      display: flex
+
+    .left
+      text-align: left
+
+    .form > div
+      margin: 6px 0
+
+
+    .box
+      +border-radius(10px)
+
+    button
+      +border-radius(10px)
+      text-transform: none
+      -webkit-appearance: none
+      cursor: hand
+      padding: 12px 18px
+      background-color: $color-button-background
+      font-size: $font-size-button
+      border: solid 1px $color-border-active
+      color: #444
+      &:hover
+        background: #F4F4F4
+        border: solid 1px $color-border
+      &:active
+        background: #FEFEFE
+        border: solid 1px $color-border-active
+      &:focus
+        outline: 0
+
+
+
+# 3. Test install
+
+ sass --watch css/styles.sass:css/styles.css
+ npm run babel
+ npm start
+ npm run webpack
+
+
+# 4. Re-Read Test Assignment.
+
+You have an array of strings, like that
+
+[
+ '() [] () ([]()[])',
+ '( (] ([)]',
+ '{}[]()',
+ '{{}]}',
+ '{[}',
+ '[}]'
+];
+
+implement please the function which 
+prints 'YES' into output if
+the string has proper 
+amount of parenthesis.
+
+By proper amount of parenthesis 
+we understand the case 
+when for the each
+opening parentheses 
+we have appropriated closing one.
+
+Result for the array above, looks like this:
+
+[
+  'YES',
+  'NO',
+  'YES'
+  'NO'
+  'NO',
+  'NO'
+]
+
+Implement the function in pure 
+JavaScript ES6 as 
+much as possible.
+
+
+
+# 5. Create First Failing Test.
+
+Expected test array
+[
+ '() [] () ([]()[])', 'YES',
+ '( (] ([)]',   'NO',
+ '{}[]()',   'YES'
+ '{{}]}',   'NO'
+ '{[}',   'NO',
+ '[}]',  'NO'
+]
+
+
+Mathify expectation
+[
+ '() [] () ([]()[])', 1,
+ '( (] ([)]',   0,
+ '{}[]()',   1,
+ '{{}]}',  0,
+ '{[}',   0,
+ '[}]',  0,
+]
+
+Expectify mathemation
+[
+ .expect(parenthesis_balanced('() [] () ([]()[])'), true),
+ .expect(parenthesis_balanced('( (] ([)]'), false),
+ .expect(parenthesis_balanced('{}[]()'), true),
+ .expect(parenthesis_balanced('{{}]}'), false),
+ .expect(parenthesis_balanced('{[}'), false),
+ .expect(parenthesis_balanced('[}]'), false),
+]
+
+
+Describe testing
+describe('Parenthesis', function() {
+  it('should balanced parenthesis return true');
+  it('should broken squared parenthesis return false');
+  it('should paired parenthesis return true');
+  it('should incomplete squared closed parenthesis return false');
+  it('should incomplete squared open parenthesis return false');
+  it('should incomplete curly parenthesis return false');
+});
+
+
+# 6. TDD - Test Server
+subl test-server.js 
+      ^^^
+    var chai = require('chai');
+    var chaiHttp = require('chai-http');
+    var server = require('../server/app');
+    var should = chai.should();
+
+    chai.use(chaiHttp);
+
+
+    describe('Parenthesis', function() {
+      it('should balanced parenthesis return true');
+      it('should broken squared parenthesis return false');
+      it('should paired parenthesis return true');
+      it('should incomplete squared closed parenthesis return false');
+      it('should incomplete squared open parenthesis return false');
+      it('should incomplete curly parenthesis return false');
+    });
+
+
+
+
+
+
+# 7.Make a git Repo
+
+https://github.com/jesusalc/parenthesis.git
+
+
+
+
+
+# 8. Google To not re-invent the Wheel
+
+"parenthesis balancing algorithm recursive"
+https://www.google.de/search?q=parenthesis+balancing+algorithm+recursive&rlz=1C5CHFA_enDE690DE690&oq=parenthesis+balancing+algorithm+recursive&aqs=chrome..69i57.699j0j7&sourceid=chrome&ie=UTF-8
+
+.Results
+https://gist.github.com/ngocdaothanh/3764694
+
+
+
+
+
+
+
